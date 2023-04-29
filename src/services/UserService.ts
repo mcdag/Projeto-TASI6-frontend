@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { Auth, User } from '../../interfaces/User';
+import { Auth, User } from '../interfaces/User';
 import apiBack from './api';
 
 export class UserService {

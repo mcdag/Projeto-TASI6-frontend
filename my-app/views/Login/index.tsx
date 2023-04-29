@@ -1,10 +1,14 @@
-import Button  from '../../components/Button';
+import Button from '../../../src/components/Button';
 import { Alert, TextField } from '@mui/material';
 import { useState } from 'react';
-import { Auth} from '../../interfaces/User';
-import { UserService } from '../../services/UserService';
-import React from 'react';
+import { Auth} from '../../../src/interfaces/User';
+import { UserService } from '../../../services/UserService';
 import './styles.scss'
+import React from 'react';
+
+interface IProps {
+  identifier: string;
+}
 
 function Login() {
   const [email, setEmail] = useState<string>('');
@@ -56,13 +60,25 @@ function Login() {
       <div className='button-submit'>
         <Button type='submit' onClick={handleClick} text='Entrar'/>
       </div>
-      <div className='button-register'>
-        <p className='button-text'>Não tem uma conta ?</p>
-        <a href={`${window.location.origin}/auth/register`}>
-        <button className='button'>
-          Registre-se agora!
-        </button>
-        </a>
+      <div className='child-or-parent'>
+        <div className='parent'>
+          <div className='parent-text'>
+            <p className='button-text'>É uma criança ?</p>
+            <a href={`${window.location.origin}/auth/login/child`}>
+              <button className='button'>
+                Entre como uma
+              </button>
+            </a>
+          </div>
+          <div className='parent-text'>
+            <p className='button-text'>Não tem uma conta ?</p>
+            <a href={`${window.location.origin}/auth/register`}>
+              <button className='button'>
+                Registre-se agora
+              </button>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
