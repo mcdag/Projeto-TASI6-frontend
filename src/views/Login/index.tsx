@@ -1,7 +1,7 @@
 import Button  from '../../components/Button';
 import { Alert, TextField } from '@mui/material';
 import { useState } from 'react';
-import { Auth} from '../../interfaces/User';
+import { Auth} from '../../interfaces/User'
 import { UserService } from '../../services/UserService';
 import React from 'react';
 import './styles.scss'
@@ -51,7 +51,7 @@ function Login() {
       <div className='forgot-password'>
         <button className='button-forget-password'>
           Esqueceu a senha?
-        </button> :
+        </button>
       </div>
       <div className='button-submit'>
         <Button type='submit' onClick={handleClick} text='Entrar'/>
