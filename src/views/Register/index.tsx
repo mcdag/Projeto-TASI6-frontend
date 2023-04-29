@@ -53,7 +53,7 @@ function Register() {
         <Button type='submit' onClick={handleClick} text='Registrar' />
       </div><div className='has-login'>
         <p className='button-text'>Já tem uma conta ?</p>
-        <a href={`${window.location.origin}/auth/login/parent`}>
+        <a href={`${window.location.origin}/auth/login`}>
           <button className='button'>
             Faça login
           </button>
