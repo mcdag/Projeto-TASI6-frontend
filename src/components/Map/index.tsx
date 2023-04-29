@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import FmdBadIcon from '@mui/icons-material/FmdBad';
+import CircularProgress from '@mui/material/CircularProgress';
 import "./styles.scss";
 
 function Map() {
@@ -9,7 +9,7 @@ function Map() {
     googleMapsApiKey: "AIzaSyAv1HV_sYP-O5MpzkzPxGhW0T34jq3-J7M",
   });
 
-  if (!isLoaded) return <>Loading...</>;
+  if (!isLoaded) return <CircularProgress />;
   return <GoogleMapsApi />;
 }
 
