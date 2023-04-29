@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-# Projeto-TASI6
-
-### Pré-requisitos
-Ter a ferramenta expo (https://expo.dev/)
-```sh
-sudo npm install --global expo-cli
-```
-
-### Rodando
-```sh
-# you can open iOS, Android, or web from here
-npm start 
-
-# run them directly with the commands below
-npm run android
-npm run ios
-npm run web
-```
-=======
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -64,4 +44,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
->>>>>>> 3814648 (Limpeza e organização de arquivos e pastas)
