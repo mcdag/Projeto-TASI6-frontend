@@ -24,7 +24,7 @@ function GoogleMapsApi() {
       center={center}
       mapContainerClassName="map-container"
     >
-      <MarkerF onClick={() => console.log('danger')} position={center} />
+      <MarkerF position={center} />
     </GoogleMap>
   );
 }
