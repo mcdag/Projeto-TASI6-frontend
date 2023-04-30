@@ -1,8 +1,20 @@
-import React from "react";
-import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import { Report } from "../../interfaces/Report";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./styles.scss";
+import React, { useMemo, useEffect } from "react";
+import {
+  GoogleMap,
+  useLoadScript,
+  MarkerF,
+  MarkerClusterer,
+} from "@react-google-maps/api";
+import "./styles.scss";
+import { Report } from "../../interfaces/Report";
+import GunIcon from "../../assets/gun.svg";
+import MataIcon from "../../assets/tree.svg";
+import PeopleIcon from "../../assets/people.svg";
+import LightIcon from "../../assets/light.svg";
+import OtherIcon from "../../assets/other.svg";
+import WomanIcon from "../../assets/woman.svg";
 
 function Map() {
   const { isLoaded } = useLoadScript({
@@ -36,22 +48,69 @@ function GoogleMapsApi() {
       isAnonymous: true,
       lat: -8.048065470511263,
       lng: -34.95069542596983,
-      reportType: ["Com Matagal"],
+      reportType: ["Pouca iluminação"],
+      date: new Date(),
+    },
+    {
+      description: "teste",
+      isAnonymous: true,
+      lat: -8.04843934787899,
+      lng: -34.952265321847854,
+      reportType: ["Outro"],
+      date: new Date(),
+    },
+    {
+      description: "teste",
+      isAnonymous: true,
+      lat: -8.0498840947377,
+      lng: -34.95041996204561,
+      reportType: ["Pouca gente"],
+      date: new Date(),
+    },
+    {
+      description: "teste",
+      isAnonymous: true,
+      lat: -8.049299822731454,
+      lng: -34.95303779804414,
+      reportType: ["Assédio"],
       date: new Date(),
     },
   ];
 
-  const markers = reports.map((report) => (
-    <MarkerF
-      key={report.lng}
-      onClick={() => console.log(report)}
-      position={{ lat: report.lat, lng: report.lng }}
-    />
-  ));
+  const markers = reports.map((report) => {
+    let markerIcon = "";
+    switch (report.reportType[0]) {
+      case "Assalto":
+        markerIcon = GunIcon;
+        break;
+      case "Com Matagal":
+        markerIcon = MataIcon;
+        break;
+      case "Pouca iluminação":
+        markerIcon = LightIcon;
+        break;
+      case "Outro":
+        markerIcon = OtherIcon;
+        break;
+      case "Assédio":
+        markerIcon = WomanIcon;
+        break;
+      case "Pouca gente":
+        markerIcon = PeopleIcon;
+    }
+    return (
+      <MarkerF
+        key={report.lng}
+        onClick={() => console.log(report)}
+        position={{ lat: report.lat, lng: report.lng }}
+        icon={markerIcon}
+      />
+    );
+  });
 
-  React.useEffect(() => {}, []);
+  useEffect(() => {}, []);
 
-  const center = React.useMemo(
+  const center = useMemo(
     () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),
     []
   );
@@ -62,7 +121,6 @@ function GoogleMapsApi() {
       zoom={15}
       center={center}
       mapContainerClassName="map-container"
-
     >
       {markers}
     </GoogleMap>
