@@ -2,6 +2,7 @@ export interface Report {
     reportType: Array<string>;
     isAnonymous: boolean;
     description: string;
-    long: number;
+    date: Date;
+    lng: number;
     lat: number;
 }
