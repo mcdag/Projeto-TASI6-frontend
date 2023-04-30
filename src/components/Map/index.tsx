@@ -124,6 +124,9 @@ function GoogleMapsApi() {
 
   useEffect(() => {
     getReports();
+
+    const eventSource = new EventSource(`${process.env.REACT_APP_URL_BACK}`);
+    eventSource.onmessage = (e) => setReports([...reports, JSON.parse(e.data)]);
   }, []);
 
   const center = useMemo(
