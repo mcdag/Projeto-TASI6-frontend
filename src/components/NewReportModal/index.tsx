@@ -1,5 +1,4 @@
-import { useState } from "react";
-import * as React from "react";
+import React, { useState } from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -7,10 +6,10 @@ import Button from "../../components/Button";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
-import "./styles.scss";
 import { ReportService } from "../../services/ReportService";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import CircularProgress from "@mui/material/CircularProgress";
+import "./styles.scss";
 
 type NewReport = {
   reportType: Array<string>;

@@ -1,5 +1,4 @@
 import CircularProgress from "@mui/material/CircularProgress";
-import "./styles.scss";
 import React, { useMemo, useEffect } from "react";
 import {
   GoogleMap,
@@ -8,7 +7,7 @@ import {
 } from "@react-google-maps/api";
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import "./styles.scss";
+import { ReportService } from "../../services/ReportService";
 import { Report } from "../../interfaces/Report";
 import GunIcon from "../../assets/gun.svg";
 import MataIcon from "../../assets/tree.svg";
@@ -16,7 +15,8 @@ import PeopleIcon from "../../assets/people.svg";
 import LightIcon from "../../assets/light.svg";
 import OtherIcon from "../../assets/other.svg";
 import WomanIcon from "../../assets/woman.svg";
-import { ReportService } from "../../services/ReportService";
+import ViewReportModel from "../ViewReportModal";
+import "./styles.scss";
 
 function Map() {
   const { isLoaded } = useLoadScript({
@@ -29,65 +29,42 @@ function Map() {
 
 function GoogleMapsApi() {
   const [addMarker, setAddMarker] = React.useState(false);
-  const [reports, setReports] = React.useState<Array<Report>>([]);
+  const [reports, setReports] = React.useState<Array<Report>>([
+    {
+      description: "Fui assaltado em frente ao mercado que tem nessa rua, fiquei apavorado e tentei chamar a polícia, mas infelizmente não consegui recuperar o meu celular",
+      anonymous: true,
+      latitude: -8.048549686419,
+      longitude: -34.9512858611799,
+      type: "Com Matagal",
+      date: new Date(),
+    },
+    {
+      description: "Fui assaltado em frente ao mercado que tem nessa rua, fiquei apavorado e tentei chamar a polícia, mas infelizmente não consegui recuperar o meu celular",
+      anonymous: true,
+      latitude: -8.048065470511263,
+      longitude: -34.95069542596983,
+      type: "Pouca iluminação",
+      date: new Date(),
+    },
+    {
+      description: "Fui assaltado em frente ao mercado que tem nessa rua, fiquei apavorado e tentei chamar a polícia, mas infelizmente não consegui recuperar o meu celular",
+      anonymous: true,
+      latitude: -8.0498840947377,
+      longitude: -34.95041996204561,
+      type: "Pouca gente",
+      date: new Date(),
+    },
+  ]);
+  
   const handleOnClickAddButton = () => {
     window.location.replace(`/report`);
   };
 
-  // const reports: Array<Report> = [
-  //   {
-  //     description: "teste",
-  //     isAnonymous: true,
-  //     lat: -8.048614030329373,
-  //     lng: -34.95056811172217,
-  //     reportType: ["Assalto"],
-  //     date: new Date(),
-  //   },
-  //   {
-  //     description: "teste",
-  //     isAnonymous: true,
-  //     lat: -8.048549686419,
-  //     lng: -34.9512858611799,
-  //     reportType: ["Com Matagal"],
-  //     date: new Date(),
-  //   },
-  //   {
-  //     description: "teste",
-  //     isAnonymous: true,
-  //     lat: -8.048065470511263,
-  //     lng: -34.95069542596983,
-  //     reportType: ["Pouca iluminação"],
-  //     date: new Date(),
-  //   },
-  //   {
-  //     description: "teste",
-  //     isAnonymous: true,
-  //     lat: -8.04843934787899,
-  //     lng: -34.952265321847854,
-  //     reportType: ["Outro"],
-  //     date: new Date(),
-  //   },
-  //   {
-  //     description: "teste",
-  //     isAnonymous: true,
-  //     lat: -8.0498840947377,
-  //     lng: -34.95041996204561,
-  //     reportType: ["Pouca gente"],
-  //     date: new Date(),
-  //   },
-  //   {
-  //     description: "teste",
-  //     isAnonymous: true,
-  //     lat: -8.049299822731454,
-  //     lng: -34.95303779804414,
-  //     reportType: ["Assédio"],
-  //     date: new Date(),
-  //   },
-  // ];
+
 
   const markers = reports.map((report) => {
     let markerIcon = "";
-    switch (report.reportType[0]) {
+    switch (report.type) {
       case "Assalto":
         markerIcon = GunIcon;
         break;
@@ -106,11 +83,12 @@ function GoogleMapsApi() {
       case "Pouca gente":
         markerIcon = PeopleIcon;
     }
+
     return (
       <MarkerF
-        key={report.lng}
-        onClick={() => console.log(report)}
-        position={{ lat: report.lat, lng: report.lng }}
+        key={report.longitude}
+        onClick={() => setDialog(true)}
+        position={{ lat: report.latitude, lng: report.longitude }}
         icon={markerIcon}
       />
     );
@@ -133,6 +111,11 @@ function GoogleMapsApi() {
     () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),
     []
   );
+  const [dialog, setDialog] = React.useState(false);
+
+  const closeDialog = () => {
+    setDialog(!dialog);
+  }
 
   return (
     <>
@@ -148,6 +131,7 @@ function GoogleMapsApi() {
       >
         {markers}
       </GoogleMap>
+    {dialog && <ViewReportModel handleFunction={closeDialog} reports={reports} />}
     </>
   );
 }

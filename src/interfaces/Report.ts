@@ -1,8 +1,8 @@
 export interface Report {
-    reportType: Array<string>;
-    isAnonymous: boolean;
+    type: string;
+    anonymous: boolean;
     description: string;
-    date: Date;
-    lng: number;
-    lat: number;
+    date?: Date;
+    longitude: number;
+    latitude: number;
 }
