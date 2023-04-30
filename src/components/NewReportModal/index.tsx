@@ -7,22 +7,35 @@ import Button from "../../components/Button";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
-import LogoText from "../../assets/logo-text.svg";
 import "./styles.scss";
 import { ReportService } from "../../services/ReportService";
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import CircularProgress from "@mui/material/CircularProgress";
 
 type NewReport = {
   reportType: Array<string>;
   isAnonymous: boolean;
   description: string;
-  long: number;
+  lng: number;
   lat: number;
+  date: Date;
 };
+
 
 export default function NewReportModal() {
   const [reportType, setReportType] = useState<Array<string>>([]);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [description, setDescription] = useState<string>("");
+  const [position, setPosition] = useState({ lat: 0, lng: 0 });
+  const [showMarker, setShowMarker] = useState(false);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyAv1HV_sYP-O5MpzkzPxGhW0T34jq3-J7M",
+  });
+
+  const center = React.useMemo(
+    () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),
+    []
+  );
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === "anonymous") {
@@ -31,7 +44,7 @@ export default function NewReportModal() {
       setIsAnonymous(false);
     }
   };
-
+  
   const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       setReportType([...reportType, event.target.value]);
@@ -51,9 +64,11 @@ export default function NewReportModal() {
       reportType: reportType,
       isAnonymous: isAnonymous,
       description: description,
-      long: 0,
-      lat: 0
+      lng: position.lng,
+      lat: position.lat,
+      date: new Date(),
     };
+    console.log(report);
     const response = await ReportService.createReport(report);
 
     if (response.status === 200) {
@@ -65,6 +80,30 @@ export default function NewReportModal() {
       alert("Erro ao criar relato... tente novamente mais tarde");
     }
   };
+
+  function Map() {
+    const handleOnClickMap = (e) => {
+      setPosition({
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+      });
+      setShowMarker(true);
+    }
+  
+    if (!isLoaded) return <CircularProgress />;
+    return (
+      <GoogleMap
+        onClick={handleOnClickMap}
+        zoom={15}
+        center={center}
+        mapContainerClassName="map-container"
+      >
+        <>
+          {showMarker ? <MarkerF position={position}/> : <></>}
+        </>
+      </GoogleMap>
+    );
+  }
 
   const CreateReportForm = () => (
     <>
@@ -179,6 +218,8 @@ export default function NewReportModal() {
               style={{ width: "30vw", marginBottom: "10px" }}
               onChange={handleDescriptionChange}
             />
+
+            <Map />
 
             <div className="button">
               <Button

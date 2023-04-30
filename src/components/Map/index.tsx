@@ -5,8 +5,9 @@ import {
   GoogleMap,
   useLoadScript,
   MarkerF,
-  MarkerClusterer,
 } from "@react-google-maps/api";
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 import "./styles.scss";
 import { Report } from "../../interfaces/Report";
 import GunIcon from "../../assets/gun.svg";
@@ -26,6 +27,11 @@ function Map() {
 }
 
 function GoogleMapsApi() {
+  const [addMarker, setAddMarker] = React.useState(false);
+  const handleOnClickAddButton = () => {
+    window.location.replace(`/report`);
+  };
+
   const reports: Array<Report> = [
     {
       description: "teste",
@@ -116,14 +122,20 @@ function GoogleMapsApi() {
   );
 
   return (
-    <GoogleMap
-      onClick={(e) => console.log(e.latLng!.lat(), e.latLng!.lng())}
-      zoom={15}
-      center={center}
-      mapContainerClassName="map-container"
-    >
-      {markers}
-    </GoogleMap>
+    <>
+      <div className="add-report">
+        <IconButton onClick={handleOnClickAddButton}>
+          <AddIcon />
+        </IconButton>
+      </div>    
+      <GoogleMap
+        zoom={15}
+        center={center}
+        mapContainerClassName="map-container"
+      >
+        {markers}
+      </GoogleMap>
+    </>
   );
 }
 
