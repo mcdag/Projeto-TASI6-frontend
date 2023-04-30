@@ -77,6 +77,8 @@ function Reports({ map }) {
   const [data, setData] = React.useState(reports);
   const [highlighted, setHighlighted] = React.useState();
 
+  // O onMouseEnter não tá pegando por algum motivo.... olhar comentários -> https://www.youtube.com/watch?v=8kxYqoY2WwE
+  // Devemos voltar pro Marker original do google ou deixar sem ser clicável?
   return (
     <>
       {Object.entries(data).map(([key, report]) => (
@@ -88,6 +90,7 @@ function Reports({ map }) {
           <div
             style={{width: '40px', height: '40px'}}
             className={`${highlighted === key ? 'highlighted' : ''}`}
+            onClick={() => console.log('CLICOU') }
             onMouseEnter={() => {
               console.log("hover");
               setHighlighted(key);
