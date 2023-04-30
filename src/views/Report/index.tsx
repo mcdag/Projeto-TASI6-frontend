@@ -11,6 +11,7 @@ import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Report } from "../../interfaces/Report";
 import "./styles.scss";
+import Cookies from "js-cookie";
 
 function Report() {
   const [reportType, setReportType] = useState<Array<string>>([]);
@@ -50,7 +51,9 @@ function Report() {
   };
 
   const handleSubimit = async () => {
+    const id = Cookies.get('id');
     const report: Report = {
+      user_id: id,
       type: reportType[0],
       anonymous: isAnonymous,
       description: description,

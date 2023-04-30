@@ -3,8 +3,8 @@ import { Alert, TextField } from "@mui/material";
 import { useState } from "react";
 import { Auth } from "../../interfaces/User";
 import { UserService } from "../../services/UserService";
-import Header from "../../components/Header";
 import React from "react";
+import Cookies from "js-cookie";
 import "./styles.scss";
 
 function Login() {
@@ -29,6 +29,9 @@ function Login() {
     if (response.status !== 200) {
       setError(true);
     } else {
+      Cookies.set('id', response.data.id);
+      Cookies.set('name', response.data.name);
+      Cookies.set('email', response.data.email);
       window.location.replace(`${window.location.origin}/localization`);
     }
   };

@@ -4,7 +4,7 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import Welcome from "./views/Welcome";
 import Localization from "./views/Localization";
-import NewReportModal from "./components/NewReportModal";
+import Report from "./views/Report";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -32,7 +32,7 @@ function App() {
     },
     {
       path: "/report",
-      element: <NewReportModal />,
+      element: <Report/>,
     }
   ]);
 
