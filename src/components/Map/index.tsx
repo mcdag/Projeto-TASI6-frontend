@@ -16,6 +16,7 @@ import PeopleIcon from "../../assets/people.svg";
 import LightIcon from "../../assets/light.svg";
 import OtherIcon from "../../assets/other.svg";
 import WomanIcon from "../../assets/woman.svg";
+import { ReportService } from "../../services/ReportService";
 
 function Map() {
   const { isLoaded } = useLoadScript({
@@ -28,60 +29,61 @@ function Map() {
 
 function GoogleMapsApi() {
   const [addMarker, setAddMarker] = React.useState(false);
+  const [reports, setReports] = React.useState<Array<Report>>([]);
   const handleOnClickAddButton = () => {
     window.location.replace(`/report`);
   };
 
-  const reports: Array<Report> = [
-    {
-      description: "teste",
-      isAnonymous: true,
-      lat: -8.048614030329373,
-      lng: -34.95056811172217,
-      reportType: ["Assalto"],
-      date: new Date(),
-    },
-    {
-      description: "teste",
-      isAnonymous: true,
-      lat: -8.048549686419,
-      lng: -34.9512858611799,
-      reportType: ["Com Matagal"],
-      date: new Date(),
-    },
-    {
-      description: "teste",
-      isAnonymous: true,
-      lat: -8.048065470511263,
-      lng: -34.95069542596983,
-      reportType: ["Pouca iluminação"],
-      date: new Date(),
-    },
-    {
-      description: "teste",
-      isAnonymous: true,
-      lat: -8.04843934787899,
-      lng: -34.952265321847854,
-      reportType: ["Outro"],
-      date: new Date(),
-    },
-    {
-      description: "teste",
-      isAnonymous: true,
-      lat: -8.0498840947377,
-      lng: -34.95041996204561,
-      reportType: ["Pouca gente"],
-      date: new Date(),
-    },
-    {
-      description: "teste",
-      isAnonymous: true,
-      lat: -8.049299822731454,
-      lng: -34.95303779804414,
-      reportType: ["Assédio"],
-      date: new Date(),
-    },
-  ];
+  // const reports: Array<Report> = [
+  //   {
+  //     description: "teste",
+  //     isAnonymous: true,
+  //     lat: -8.048614030329373,
+  //     lng: -34.95056811172217,
+  //     reportType: ["Assalto"],
+  //     date: new Date(),
+  //   },
+  //   {
+  //     description: "teste",
+  //     isAnonymous: true,
+  //     lat: -8.048549686419,
+  //     lng: -34.9512858611799,
+  //     reportType: ["Com Matagal"],
+  //     date: new Date(),
+  //   },
+  //   {
+  //     description: "teste",
+  //     isAnonymous: true,
+  //     lat: -8.048065470511263,
+  //     lng: -34.95069542596983,
+  //     reportType: ["Pouca iluminação"],
+  //     date: new Date(),
+  //   },
+  //   {
+  //     description: "teste",
+  //     isAnonymous: true,
+  //     lat: -8.04843934787899,
+  //     lng: -34.952265321847854,
+  //     reportType: ["Outro"],
+  //     date: new Date(),
+  //   },
+  //   {
+  //     description: "teste",
+  //     isAnonymous: true,
+  //     lat: -8.0498840947377,
+  //     lng: -34.95041996204561,
+  //     reportType: ["Pouca gente"],
+  //     date: new Date(),
+  //   },
+  //   {
+  //     description: "teste",
+  //     isAnonymous: true,
+  //     lat: -8.049299822731454,
+  //     lng: -34.95303779804414,
+  //     reportType: ["Assédio"],
+  //     date: new Date(),
+  //   },
+  // ];
 
   const markers = reports.map((report) => {
     let markerIcon = "";
@@ -114,7 +116,15 @@ function GoogleMapsApi() {
     );
   });
 
-  useEffect(() => {}, []);
+  const getReports = async () => {
+    const response = await ReportService.getReports();
+
+    if(response.status === 200) setReports(response.data);
+  };
+
+  useEffect(() => {
+    getReports();
+  }, []);
 
   const center = useMemo(
     () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),
