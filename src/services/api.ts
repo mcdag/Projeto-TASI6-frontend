@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-const apiBack = axios.create({ baseURL: process.env.REACT_APP_URL_BACK });
+const apiBack = axios.create({ baseURL: "localhost:8080" });
 
 export default apiBack;

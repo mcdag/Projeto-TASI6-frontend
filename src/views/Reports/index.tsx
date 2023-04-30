@@ -10,10 +10,10 @@ import { ReportService } from "../../services/ReportService";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Report } from "../../interfaces/Report";
-import "./styles.scss";
 import Cookies from "js-cookie";
+import "./styles.scss";
 
-function Report() {
+function Reports() {
   const [reportType, setReportType] = useState<Array<string>>([]);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [description, setDescription] = useState<string>("");
@@ -229,4 +229,4 @@ function Report() {
   return <CreateReportForm />;
 }
 
-export default Report;
+export default Reports;
