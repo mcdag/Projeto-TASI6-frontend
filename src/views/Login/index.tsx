@@ -35,7 +35,6 @@ function Login() {
 
   return (
     <>
-      <Header />
       <div className="general-login-container">
         <p className="title">Faça o login</p>
         <p className="subtitle"> Bem-vindo de volta!</p>
@@ -74,10 +73,10 @@ function Login() {
         <div className="button-submit">
           <Button type="submit" onClick={handleClick} text="Entrar" />
         </div>
-        <div className="button-register">
+        <div className="button-register-div">
           <p className="button-text">Não tem uma conta ?</p>
           <a href={`${window.location.origin}/auth/register`}>
-            <button className="button">Registre-se agora!</button>
+            <button className="button-register">Registre-se agora!</button>
           </a>
         </div>
       </div>

@@ -42,7 +42,6 @@ function Register() {
 
   return (
     <>
-      <Header />
       <div className="general-register-container">
         <p className="title">Crie uma conta</p>
         <p className="subtitle"> Olá, boa jornada!</p>
@@ -80,9 +79,9 @@ function Register() {
           <Button type="submit" onClick={handleClick} text="Registrar" />
         </div>
         <div className="has-login">
-          <p className="button-text">Já tem uma conta ?</p>
+          <p className="button-login-div">Já tem uma conta? </p>
           <a href={`${window.location.origin}/auth/login`}>
-            <button className="button">Faça login</button>
+            <button className="button-login">Faça login!</button>
           </a>
         </div>
       </div>

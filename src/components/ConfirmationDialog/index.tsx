@@ -1,4 +1,6 @@
 import React from "react";
+import ReportIcon from "../../assets/report-avatar.svg";
+import WomanIcon from "../../assets/woman-figure.svg";
 import {
   Dialog,
   DialogTitle,
@@ -11,14 +13,14 @@ import "./styles.scss";
 
 interface Props {
   handleFunction: React.MouseEventHandler;
-  icon: string;
+  report: boolean;
   title: string;
   description: string;
 }
 
 function ConfirmationDialog({
   handleFunction,
-  icon,
+  report,
   title,
   description,
 }: Props) {
@@ -41,7 +43,7 @@ function ConfirmationDialog({
       aria-labelledby="confirmation-dialog-title"
       aria-describedby="confirmation-dialog-description"
     >
-      <img className="icon" width="37.5%" src={icon} alt="Ícone" />
+      <img className="icon" width="37.5%" src={report ? ReportIcon : WomanIcon} alt="Ícone" />
       <DialogTitle className="title" id="confirmation-dialog-title">
         {title}
       </DialogTitle>
