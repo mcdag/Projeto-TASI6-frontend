@@ -2,8 +2,8 @@ import React from "react";
 import Woman from "../../assets/woman-figure.svg";
 import LogoText from "../../assets/logo-text.svg";
 import Button from "../../components/Button";
-import "./styles.scss";
 import Header from "../../components/Header";
+import "./styles.scss";
 
 function Initial() {
   const handleClickLogin = async () => {

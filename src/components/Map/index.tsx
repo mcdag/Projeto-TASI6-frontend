@@ -18,49 +18,30 @@ import WomanIcon from "../../assets/woman.svg";
 import ViewReportModel from "../ViewReportModal";
 import "./styles.scss";
 
-function Map() {
+interface MapProps {
+  reports: Report[];
+}
+
+interface GoogleMapsProps {
+  reportsList: Report[];
+}
+
+function Map({reports}: MapProps) {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyAv1HV_sYP-O5MpzkzPxGhW0T34jq3-J7M",
   });
 
   if (!isLoaded) return <CircularProgress />;
-  return <GoogleMapsApi />;
+  return <GoogleMapsApi reportsList={reports}/>;
 }
 
-function GoogleMapsApi() {
+function GoogleMapsApi({reportsList}: GoogleMapsProps) {
   const [addMarker, setAddMarker] = React.useState(false);
-  const [reports, setReports] = React.useState<Array<Report>>([
-    {
-      description: "Fui assaltado em frente ao mercado que tem nessa rua, fiquei apavorado e tentei chamar a polícia, mas infelizmente não consegui recuperar o meu celular",
-      anonymous: true,
-      latitude: -8.048549686419,
-      longitude: -34.9512858611799,
-      type: "Com Matagal",
-      date: new Date(),
-    },
-    {
-      description: "Fui assaltado em frente ao mercado que tem nessa rua, fiquei apavorado e tentei chamar a polícia, mas infelizmente não consegui recuperar o meu celular",
-      anonymous: true,
-      latitude: -8.048065470511263,
-      longitude: -34.95069542596983,
-      type: "Pouca iluminação",
-      date: new Date(),
-    },
-    {
-      description: "Fui assaltado em frente ao mercado que tem nessa rua, fiquei apavorado e tentei chamar a polícia, mas infelizmente não consegui recuperar o meu celular",
-      anonymous: true,
-      latitude: -8.0498840947377,
-      longitude: -34.95041996204561,
-      type: "Pouca gente",
-      date: new Date(),
-    },
-  ]);
+  const [reports, setReports] = React.useState<Array<Report>>(reportsList);
   
   const handleOnClickAddButton = () => {
-    window.location.replace(`/report`);
+    window.location.replace(`${window.location.origin}/report`);
   };
-
-
 
   const markers = reports.map((report) => {
     let markerIcon = "";
@@ -94,18 +75,20 @@ function GoogleMapsApi() {
     );
   });
 
-  const getReports = async () => {
+
+  async function getReports() {
     const response = await ReportService.getReports();
 
-    if(response.status === 200) setReports(response.data);
-  };
+    if(response.status === 200) {
+      setReports(response.data);
+    }
+  }
 
   useEffect(() => {
     getReports();
-
     const eventSource = new EventSource(`${process.env.REACT_APP_URL_BACK}`);
     eventSource.onmessage = (e) => setReports([...reports, JSON.parse(e.data)]);
-  }, []);
+  }, [reports]);
 
   const center = useMemo(
     () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),

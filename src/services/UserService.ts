@@ -5,7 +5,7 @@ import apiBack from './api';
 export class UserService {
   static async createUser(user: User): Promise<AxiosResponse> {
     const response = await apiBack.post(
-      '/users', user,
+      '/user', user,
       {
         validateStatus: status => [201, 400].includes(status),
       },
@@ -15,7 +15,7 @@ export class UserService {
 
   static async getLogin(auth: Auth): Promise<AxiosResponse> {
     const response = await apiBack.post(
-      '/users', auth,
+      '/login', auth,
       {
         validateStatus: status => [201, 400].includes(status),
       },
