@@ -8,14 +8,19 @@ interface PropsList {
 }
 
 function ComponentsList({reports}: PropsList) {
-  return (
-    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      { reports.map((report) => {
-       return <ReportItem report={report}/>
-      })
-    }
-    </List>
-  );
+  if(reports) {
+    return (
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        { reports.map((report) => {
+         return <ReportItem report={report}/>
+        })
+      }
+      </List>
+    );
+  } else {
+    <div>
+    </div>
+  }
 }
 
 export default ComponentsList;

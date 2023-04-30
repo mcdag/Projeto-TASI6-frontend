@@ -37,7 +37,7 @@ function Map({reports}: MapProps) {
 
 function GoogleMapsApi({reportsList}: GoogleMapsProps) {
   const [addMarker, setAddMarker] = React.useState(false);
-  const [reports, setReports] = React.useState<Array<Report>>(reportsList);
+  const [reports, setReports] = React.useState<Array<Report>>(reportsList || []);
   
   const handleOnClickAddButton = () => {
     window.location.replace(`${window.location.origin}/report`);
@@ -103,8 +103,8 @@ function GoogleMapsApi({reportsList}: GoogleMapsProps) {
   return (
     <>
       <div className="add-report">
-        <IconButton onClick={handleOnClickAddButton}>
-          <AddIcon />
+        <IconButton sx={{backgroundColor:"#6E77F6"}} onClick={handleOnClickAddButton}>
+          <AddIcon /> 
         </IconButton>
       </div>    
       <GoogleMap

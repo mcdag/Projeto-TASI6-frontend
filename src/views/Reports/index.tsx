@@ -210,9 +210,6 @@ function Reports() {
               style={{ width: "30vw", marginBottom: "10px" }}
               onChange={handleDescriptionChange}
             />
-
-            <Map />
-
             <div className="button">
               <Button
                 onClick={handleSubimit}
