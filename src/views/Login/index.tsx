@@ -29,7 +29,7 @@ function Login() {
     if (response.status !== 200) {
       setError(true);
     } else {
-      window.location.replace(`${window.location.origin}/`);
+      window.location.replace(`/localization`);
     }
   };
 

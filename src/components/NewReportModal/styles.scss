@@ -1,0 +1,41 @@
+.report-container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    height: 80vh;
+    padding: 20px;
+    box-sizing: border-box;
+    display: grid;
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        margin-left: 70px;
+    }
+  
+    .title {
+      color: #6E77F6;
+      font-weight: bold;
+      font-size: 34px;
+      line-height: 43px;
+      margin-bottom: 0px;
+    }
+  
+    .subtitle {
+      color: black;
+      font-weight: 400;
+      font-size: 20px;
+      margin: 2% 0;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 2% 0;
+    }
+  
+    .button {
+        width: 30vw;
+    }
+}
