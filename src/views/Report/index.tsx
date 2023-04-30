@@ -9,19 +9,10 @@ import TextField from "@mui/material/TextField";
 import { ReportService } from "../../services/ReportService";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Report } from "../../interfaces/Report";
 import "./styles.scss";
 
-type NewReport = {
-  reportType: Array<string>;
-  isAnonymous: boolean;
-  description: string;
-  lng: number;
-  lat: number;
-  date: Date;
-};
-
-
-export default function NewReportModal() {
+function Report() {
   const [reportType, setReportType] = useState<Array<string>>([]);
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [description, setDescription] = useState<string>("");
@@ -59,15 +50,14 @@ export default function NewReportModal() {
   };
 
   const handleSubimit = async () => {
-    const report: NewReport = {
-      reportType: reportType,
-      isAnonymous: isAnonymous,
+    const report: Report = {
+      type: reportType[0],
+      anonymous: isAnonymous,
       description: description,
-      lng: position.lng,
-      lat: position.lat,
+      longitude: position.lng,
+      latitude: position.lat,
       date: new Date(),
     };
-    console.log(report);
     const response = await ReportService.createReport(report);
 
     if (response.status === 200) {
@@ -174,11 +164,11 @@ export default function NewReportModal() {
                   control={
                     <Checkbox
                       onChange={(e) => handleCheckBoxChange(e)}
-                      checked={reportType.includes("Pouca Gente")}
+                      checked={reportType.includes("Pouca gente")}
                     />
                   }
-                  value="Pouca Gente"
-                  label="Pouca Gente"
+                  value="Pouca gente"
+                  label="Pouca gente"
                 />
               </div>
             </div>
@@ -211,7 +201,7 @@ export default function NewReportModal() {
             </p>
             <TextField
               id="outlined-multiline-static"
-              label="Descreva seu relato"
+              label="Descreva seu relato!"
               multiline
               rows={2}
               style={{ width: "30vw", marginBottom: "10px" }}
@@ -235,3 +225,5 @@ export default function NewReportModal() {
 
   return <CreateReportForm />;
 }
+
+export default Report;
