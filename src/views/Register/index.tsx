@@ -3,9 +3,8 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import { User } from "../../interfaces/User";
 import { UserService } from "../../services/UserService";
-import "./styles.scss";
-import Header from "../../components/Header";
 import React from "react";
+import "./styles.scss";
 
 function Register() {
   const [name, setName] = useState<string>("");
