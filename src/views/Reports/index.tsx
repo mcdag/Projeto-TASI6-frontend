@@ -105,7 +105,7 @@ function Reports() {
     );
   }
 
-  const CreateReportForm = () => (
+  return (
     <>
       <div className="report-container">
         <div className="arrow-button">
@@ -224,7 +224,11 @@ function Reports() {
                 label="Descreva seu relato!"
                 variant="outlined"
                 multiline
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDescription(event.target.value)}
+                value={description}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  event.stopPropagation()
+                  setDescription(event.target.value)}
+                }
               />
               <div className="send-button">
                 <Button
@@ -239,9 +243,7 @@ function Reports() {
       </div>
       {policeDialog && <PoliceDialog handleFunction={handlePoliceDialog}/>}
     </>
-  );
-
-  return <CreateReportForm />;
+ )
 }
 
 export default Reports;
