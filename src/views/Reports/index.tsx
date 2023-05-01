@@ -6,12 +6,15 @@ import Button from "../../components/Button";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { ReportService } from "../../services/ReportService";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import CircularProgress from "@mui/material/CircularProgress";
 import { Report } from "../../interfaces/Report";
+import CircularProgress from "@mui/material/CircularProgress";
 import Cookies from "js-cookie";
 import "./styles.scss";
+import { IconButton } from "@mui/material";
+import PoliceDialog from "../../components/PoliceDialog";
 
 function Reports() {
   const [reportType, setReportType] = useState<Array<string>>([]);
@@ -50,6 +53,15 @@ function Reports() {
     setDescription(event.target.value);
   };
 
+  const [policeDialog, setPoliceDialog] =  useState(true);
+  const handlePoliceDialog = () => {
+    setPoliceDialog(!policeDialog)
+  }
+
+  const handleClose = () => {
+    window.location.replace(`${window.location.origin}/localization`);
+  }
+
   const handleSubimit = async () => {
     const id = Cookies.get('id');
     const report: Report = {
@@ -65,8 +77,10 @@ function Reports() {
 
     if (response.status === 200) {
       alert("Relato criado com sucesso!");
+
+
       setInterval(() => {
-        window.location.replace(`/localization`);
+        window.location.replace(`${window.location.origin}/localization`);
       }, 5000);
     } else {
       alert("Erro ao criar relato... tente novamente mais tarde");
@@ -100,17 +114,20 @@ function Reports() {
   const CreateReportForm = () => (
     <>
       <div className="report-container">
-        <div className="content-container">
-          <div>
-            <p className="title">Fazer um Relato</p>
-            <p className="subtitle">Fortaleça a comunidade</p>
-          </div>
+        <div className="arrow-button">
+          <IconButton onClick={handleClose}>
+            <ArrowBackIosIcon color="action"/>
+          </IconButton>
+        </div>
+        <div className="title-container">
+          <p className="title">Fazer um relato</p>
+          <p className="subtitle">Fortaleça a comunidade!</p>
         </div>
         <FormGroup>
           <div>
             <p className="subtitle">Tipo de Relato</p>
             <div className="content-container">
-              <div>
+              <div className='check-boxes'>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -202,24 +219,27 @@ function Reports() {
             <p color={"#929292"} className="subtitle">
               Relato
             </p>
-            <TextField
-              id="outlined-multiline-static"
-              label="Descreva seu relato!"
-              multiline
-              rows={2}
-              style={{ width: "30vw", marginBottom: "10px" }}
-              onChange={handleDescriptionChange}
-            />
-            <div className="button">
-              <Button
-                onClick={handleSubimit}
-                text="Enviar relato"
-                type="submit"
+            <div className="send-report">
+              <TextField
+                sx={{ width: "80vw", marginBottom: "5%" }}
+                className="text-field"
+                multiline
+                label="Descreva seu relato!"
+                variant="outlined"
+                onChange={handleDescriptionChange}
               />
+              <div className="send-button">
+                <Button
+                  onClick={handleSubimit}
+                  text="Enviar relato"
+                  type="submit"
+                />
+              </div>
             </div>
           </div>
         </FormGroup>
       </div>
+      {policeDialog && <PoliceDialog handleFunction={handlePoliceDialog}/>}
     </>
   );
 

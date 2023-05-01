@@ -6,36 +6,54 @@
     padding: 20px;
     box-sizing: border-box;
     display: grid;
+    margin-left: 3%;
 
-    .logo {
-        display: flex;
-        justify-content: center;
-        margin-left: 70px;
+    .arrow-button {
+      display: flex;
+      justify-content: flex-start;
     }
   
-    .title {
-      color: #6E77F6;
-      font-weight: bold;
-      font-size: 34px;
-      line-height: 43px;
-      margin-bottom: 0px;
-    }
-  
-    .subtitle {
-      color: black;
-      font-weight: 400;
-      font-size: 20px;
-      margin: 2% 0;
+    .title-container {
+      margin-top: 2%;
+
+      .title {
+        color: #6E77F6;
+        font-weight: bold;
+        font-size: 34px;
+        line-height: 43px;
+        margin: 0%;
+      }
+    
+      .subtitle {
+        color: black;
+        font-weight: 400;
+        font-size: 20px;
+        margin: 2% 0;
+      }
     }
 
     .content-container {
+        margin-left: 3%;
+        margin-top: 2%;
         display: flex;
         flex-direction: row;
         align-items: center;
         margin: 2% 0;
+      }
+
+    .subtitle {
+      margin-top: 15%;
+      font-size: x-large;
+      font-weight: bold;
+      color: #6E77F6;
     }
-  
-    .button {
-        width: 30vw;
+
+    .send-report {
+      margin-bottom: 5%;
+
+      .send-button {
+        margin-top: 5%;
+        width: 80vw;
+      }
     }
 }
