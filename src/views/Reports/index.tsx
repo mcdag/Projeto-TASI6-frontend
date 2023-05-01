@@ -5,16 +5,16 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "../../components/Button";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import TextField from "@mui/material/TextField";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import CircularProgress from "@mui/material/CircularProgress";
+import Cookies from "js-cookie";
+import PoliceDialog from "../../components/PoliceDialog";
 import { ReportService } from "../../services/ReportService";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { Report } from "../../interfaces/Report";
-import CircularProgress from "@mui/material/CircularProgress";
-import Cookies from "js-cookie";
-import "./styles.scss";
+import { TextField } from "@mui/material";
 import { IconButton } from "@mui/material";
-import PoliceDialog from "../../components/PoliceDialog";
+import "./styles.scss";
 
 function Reports() {
   const [reportType, setReportType] = useState<Array<string>>([]);
@@ -47,13 +47,7 @@ function Reports() {
     }
   };
 
-  const handleDescriptionChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setDescription(event.target.value);
-  };
-
-  const [policeDialog, setPoliceDialog] =  useState(true);
+  const [policeDialog, setPoliceDialog] =  useState(false);
   const handlePoliceDialog = () => {
     setPoliceDialog(!policeDialog)
   }
@@ -77,7 +71,7 @@ function Reports() {
 
     if (response.status === 200) {
       alert("Relato criado com sucesso!");
-
+      setPoliceDialog(true);
 
       setInterval(() => {
         window.location.replace(`${window.location.origin}/localization`);
@@ -125,6 +119,10 @@ function Reports() {
         </div>
         <FormGroup>
           <div>
+            <p className="subtitle">Local do Relato</p>
+            <div className="map-container">
+              <Map/>
+            </div>
             <p className="subtitle">Tipo de Relato</p>
             <div className="content-container">
               <div className='check-boxes'>
@@ -223,10 +221,10 @@ function Reports() {
               <TextField
                 sx={{ width: "80vw", marginBottom: "5%" }}
                 className="text-field"
-                multiline
                 label="Descreva seu relato!"
                 variant="outlined"
-                onChange={handleDescriptionChange}
+                multiline
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setDescription(event.target.value)}
               />
               <div className="send-button">
                 <Button

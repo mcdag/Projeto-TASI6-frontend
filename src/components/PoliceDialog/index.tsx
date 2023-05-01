@@ -52,11 +52,11 @@ function PoliceDialog({
         </DialogContentText>
       </DialogContent>
       <DialogActions sx={{ display: "flex", justifyContent: "space-evenly" }}>
-        <Button variant="contained" className="button" onClick={handleFunctionOpenPoliceReport}>
-          Sim
-        </Button>
         <Button variant="contained" className="button" onClick={handleFunction}>
           Não
+        </Button>
+        <Button variant="contained" className="button" onClick={handleFunctionOpenPoliceReport}>
+          Sim
         </Button>
       </DialogActions>
     </Dialog>
