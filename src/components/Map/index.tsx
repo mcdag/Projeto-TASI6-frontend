@@ -1,12 +1,8 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useMemo, useEffect } from "react";
-import {
-  GoogleMap,
-  useLoadScript,
-  MarkerF,
-} from "@react-google-maps/api";
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 import { ReportService } from "../../services/ReportService";
 import { Report } from "../../interfaces/Report";
 import GunIcon from "../../assets/gun.svg";
@@ -26,48 +22,73 @@ interface GoogleMapsProps {
   reportsList: Report[];
 }
 
-function Map({reports}: MapProps) {
+function Map({ reports }: MapProps) {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyAv1HV_sYP-O5MpzkzPxGhW0T34jq3-J7M",
   });
 
   if (!isLoaded) return <CircularProgress />;
-  return <GoogleMapsApi reportsList={reports}/>;
+  return <GoogleMapsApi reportsList={reports} />;
 }
 
-function GoogleMapsApi({reportsList}: GoogleMapsProps) {
-  const [addMarker, setAddMarker] = React.useState(false);
-  const [reports, setReports] = React.useState<Array<Report>>(reportsList || []);
-  
-  const handleOnClickAddButton = () => {
-    window.location.replace(`${window.location.origin}/report`);
-  };
+function setIcon(reportType: string) {
+  let markerIcon = "";
+  switch (reportType) {
+    case "Assalto":
+      markerIcon = GunIcon;
+      break;
+    case "Com Matagal":
+      markerIcon = MataIcon;
+      break;
+    case "Pouca iluminação":
+      markerIcon = LightIcon;
+      break;
+    case "Outro":
+      markerIcon = OtherIcon;
+      break;
+    case "Assédio":
+      markerIcon = WomanIcon;
+      break;
+    case "Pouca gente":
+      markerIcon = PeopleIcon;
+  }
 
-  const markers = reports.map((report) => {
-    let markerIcon = "";
-    switch (report.type) {
-      case "Assalto":
-        markerIcon = GunIcon;
-        break;
-      case "Com Matagal":
-        markerIcon = MataIcon;
-        break;
-      case "Pouca iluminação":
-        markerIcon = LightIcon;
-        break;
-      case "Outro":
-        markerIcon = OtherIcon;
-        break;
-      case "Assédio":
-        markerIcon = WomanIcon;
-        break;
-      case "Pouca gente":
-        markerIcon = PeopleIcon;
-    }
+  return markerIcon;
+}
+
+function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
+  const [reports, setReports] = React.useState<Array<Report>>(
+    reportsList || [
+      {
+        userId: "0",
+        authToken: "string",
+        reportType: "Assalto",
+        anonymous: true,
+        description: "string;,",
+        reportDate: new Date(),
+        longitude: -34.95090266104293,
+        latitude: -8.050512029966573,
+      },
+      {
+        userId: "0",
+        authToken: "string",
+        reportType: "Assalto",
+        anonymous: true,
+        description: "string;,",
+        reportDate: new Date(),
+        longitude: -34.9505938509932,
+        latitude: -8.051025258303103,
+      },
+    ]
+  );
+  const [isSubscribed, setIsSubscribed] = React.useState(false);
+
+  const initialMarkers = reports.map((report) => {
+    let markerIcon = setIcon(report.reportType);
 
     return (
       <MarkerF
-        key={report.longitude}
+        key={report.longitude+report.latitude}
         onClick={() => setDialog(true)}
         position={{ lat: report.latitude, lng: report.longitude }}
         icon={markerIcon}
@@ -75,20 +96,59 @@ function GoogleMapsApi({reportsList}: GoogleMapsProps) {
     );
   });
 
+  const [markers, setMarkers] = React.useState<JSX.Element[]>(initialMarkers);
+
+  const handleOnClickAddButton = () => {
+    window.location.replace(`${window.location.origin}/report`);
+  };
+
+  React.useEffect(() => {
+    if (!isSubscribed) {
+      const eventSource = new EventSource("http://localhost:8080/subscribe");
+
+      eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log(data);
+        const newReport: Report = {
+          userId: data.userId,
+          authToken: "",
+          reportType: data.type,
+          anonymous: true,
+          description: data.description,
+          reportDate: data.reportDate,
+          longitude: data.longitude,
+          latitude: data.latitude,
+        };
+        setReports((reports) => reports.concat(newReport));
+
+        const markerIcon = setIcon(newReport.reportType);
+        const marker = (
+          <MarkerF
+            key={newReport.longitude}
+            onClick={() => setDialog(true)}
+            position={{ lat: newReport.latitude, lng: newReport.longitude }}
+            icon={markerIcon}
+          />
+        );
+        console.log("marker----> ", markers.length);
+        setMarkers((markers) => markers.concat(marker));
+      };
+
+      setIsSubscribed(true);
+    }
+  }, [markers, isSubscribed]);
 
   async function getReports() {
     const response = await ReportService.getReports();
 
-    if(response.status === 200) {
+    if (response.status === 200) {
       setReports(response.data);
     }
   }
 
   useEffect(() => {
     getReports();
-    const eventSource = new EventSource(`${process.env.REACT_APP_URL_BACK}`);
-    eventSource.onmessage = (e) => setReports([...reports, JSON.parse(e.data)]);
-  }, [reports]);
+  }, []);
 
   const center = useMemo(
     () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),
@@ -98,15 +158,18 @@ function GoogleMapsApi({reportsList}: GoogleMapsProps) {
 
   const closeDialog = () => {
     setDialog(!dialog);
-  }
+  };
 
   return (
     <>
       <div className="add-report">
-        <IconButton sx={{backgroundColor:"#6E77F6"}} onClick={handleOnClickAddButton}>
-          <AddIcon /> 
+        <IconButton
+          sx={{ backgroundColor: "#6E77F6" }}
+          onClick={handleOnClickAddButton}
+        >
+          <AddIcon />
         </IconButton>
-      </div>    
+      </div>
       <GoogleMap
         zoom={15}
         center={center}
@@ -114,7 +177,9 @@ function GoogleMapsApi({reportsList}: GoogleMapsProps) {
       >
         {markers}
       </GoogleMap>
-    {dialog && <ViewReportModel handleFunction={closeDialog} reports={reports} />}
+      {dialog && (
+        <ViewReportModel handleFunction={closeDialog} reports={reports} />
+      )}
     </>
   );
 }
