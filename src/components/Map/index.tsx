@@ -61,21 +61,8 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
     reportsList || []
   );
   const [isSubscribed, setIsSubscribed] = React.useState(false);
-  console.log("reports->>", reports);
-  const initialMarkers = reports.map((report) => {
-    let markerIcon = setIcon(report.type);
 
-    return (
-      <MarkerF
-        key={report.longitude + report.latitude}
-        onClick={() => setDialog(true)}
-        position={{ lat: report.latitude, lng: report.longitude }}
-        icon={markerIcon}
-      />
-    );
-  });
-
-  const [markers, setMarkers] = React.useState<JSX.Element[]>(initialMarkers);
+  const [markers, setMarkers] = React.useState<JSX.Element[]>();
 
   const handleOnClickAddButton = () => {
     window.location.replace(`${window.location.origin}/report`);
@@ -110,18 +97,45 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
           />
         );
 
-        setMarkers((markers) => markers.concat(marker));
+        setMarkers((markers) => markers!.concat(marker));
       }
 
       setIsSubscribed(true);
     };
-  }, [markers]);
+  }, [markers, reports]);
 
   async function getReports() {
     const response = await ReportService.getReports();
 
     if (response.status === 200) {
-      setReports(response.data.reports);
+      console.log(response.data);
+      const responseReports: Report[] = response.data.reports.map(
+        (report: Report) => {
+          return {
+            type: report.type,
+            anonymous: true,
+            description: report.description,
+            longitude: report.longitude,
+            latitude: report.latitude,
+          };
+        }
+      );
+      console.log("RESPONSE REPORTS->>>>", responseReports);
+      const initialMarkers = responseReports.map((report) => {
+        let markerIcon = setIcon(report.type);
+
+        return (
+          <MarkerF
+            key={report.longitude + report.latitude}
+            onClick={() => setDialog(true)}
+            position={{ lat: report.latitude, lng: report.longitude }}
+            icon={markerIcon}
+          />
+        );
+      });
+
+      setMarkers(initialMarkers);
+      setReports(responseReports);
     }
   }
 

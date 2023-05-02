@@ -17,7 +17,7 @@ export class UserService {
     const response = await apiBack.post(
       '/login', auth,
       {
-        validateStatus: status => [201, 400].includes(status),
+        validateStatus: status => [200, 400].includes(status),
       },
     );
     return response;
