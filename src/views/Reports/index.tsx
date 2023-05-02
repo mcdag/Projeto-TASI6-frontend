@@ -12,7 +12,7 @@ import PoliceDialog from "../../components/PoliceDialog";
 import { ReportService } from "../../services/ReportService";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { Report } from "../../interfaces/Report";
-import { TextField } from "@mui/material";
+import { Alert, TextField } from "@mui/material";
 import { IconButton } from "@mui/material";
 import "./styles.scss";
 
@@ -26,7 +26,9 @@ function Reports() {
     lng: -34.95105296337313,
   });
   const [showMarker, setShowMarker] = React.useState(false);
-  const [policeDialog, setPoliceDialog] = React.useState(false);
+  const [policeDialog, setPoliceDialog] =  React.useState(false);
+  const [sucessAlert, setSucessAlert] =  React.useState(false);
+  const [errorAlert, setErrorAlert] =  React.useState(false);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyAv1HV_sYP-O5MpzkzPxGhW0T34jq3-J7M",
@@ -85,14 +87,14 @@ function Reports() {
     const response = await ReportService.createReport(report);
 
     if (response.status === 201) {
-      alert("Relato criado com sucesso!");
+      setSucessAlert(true);
       setPoliceDialog(true);
 
       setInterval(() => {
         window.location.replace(`${window.location.origin}/localization`);
       }, 5000);
     } else if (response.status === 401) {
-      alert("Sua sessão expirou. Faça login novamente");
+      setErrorAlert(true);
 
       setInterval(() => {
         window.location.replace(`${window.location.origin}/auth/login`);
@@ -131,6 +133,10 @@ function Reports() {
   return (
     <>
       <div className="report-container">
+        <div className="alerts">
+          {sucessAlert && <Alert onClose={() => setSucessAlert(false)}>Relato criado com sucesso!</Alert>}
+          {errorAlert && <Alert severity="error" onClose={() => setErrorAlert(false)}>Erro ao criar relato!</Alert>}
+        </div>
         <div className="arrow-button">
           <IconButton onClick={handleClose}>
             <ArrowBackIosIcon color="action" />
