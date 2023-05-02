@@ -43,14 +43,14 @@ function setIcon(type: string) {
     case "Pouca iluminação":
       markerIcon = LightIcon;
       break;
-    case "Outro":
-      markerIcon = OtherIcon;
-      break;
     case "Assédio":
       markerIcon = WomanIcon;
       break;
     case "Pouca gente":
       markerIcon = PeopleIcon;
+      break;
+    default:
+      markerIcon = OtherIcon;
   }
 
   return markerIcon;
