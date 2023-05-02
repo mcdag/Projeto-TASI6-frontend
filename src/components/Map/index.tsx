@@ -181,20 +181,10 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
       >
         {markers}
       </GoogleMap>
-      {!dialog && (
+      {dialog && (
         <ViewReportModel
           handleFunction={closeDialog}
-          reports={[{
-            userId: "1122132",
-            username: "clara",
-            authToken: "23737383",
-            type: "Assalto",
-            anonymous: true,
-            description: "Fui assaltada foi terrivel",
-            date: new Date(),
-            longitude: -93939889922,
-            latitude: 72726262721,
-          }]}
+          reports={reports}
         />
       )}
     </>
