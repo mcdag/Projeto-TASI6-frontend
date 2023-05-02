@@ -17,7 +17,7 @@ import { IconButton } from "@mui/material";
 import "./styles.scss";
 
 function Reports() {
-  const [reportType, setReportType] = React.useState<Array<string>>([]);
+  const [type, settype] = React.useState<Array<string>>([]);
   const [isAnonymous, setIsAnonymous] = React.useState(false);
   const [description, setDescription] = React.useState<string>("");
   const [position, setPosition] = React.useState({ lat: 0, lng: 0 });
@@ -43,9 +43,9 @@ function Reports() {
   
   const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      setReportType([...reportType, event.target.value]);
+      settype([...type, event.target.value]);
     } else {
-      setReportType(reportType.filter((item) => item !== event.target.value));
+      settype(type.filter((item) => item !== event.target.value));
     }
   };
 
@@ -71,17 +71,17 @@ function Reports() {
     const report: Report = {
       authToken: token || "",
       userId: id || "",
-      reportType: reportType[0],
+      type: type[0],
       anonymous: isAnonymous,
       description: description,
       longitude: position.lng,
       latitude: position.lat,
-      reportDate: new Date()
+      date: new Date()
     };
     console.log(report);
     const response = await ReportService.createReport(report);
 
-    if (response.status == 200) {
+    if (response.status === 201) {
       alert("Relato criado com sucesso!");
       setPoliceDialog(true);
 
@@ -89,7 +89,7 @@ function Reports() {
         window.location.replace(`${window.location.origin}/localization`);
       }, 5000);
 
-    } else if (response.status == 401) {
+    } else if (response.status === 401) {
       alert("Sua sessão expirou. Faça login novamente");
 
       setInterval(() => {
@@ -150,7 +150,7 @@ function Reports() {
                   control={
                     <Checkbox
                       onChange={(e) => handleCheckBoxChange(e)}
-                      checked={reportType.includes("Assalto")}
+                      checked={type.includes("Assalto")}
                     />
                   }
                   value="Assalto"
@@ -160,7 +160,7 @@ function Reports() {
                   control={
                     <Checkbox
                       onChange={(e) => handleCheckBoxChange(e)}
-                      checked={reportType.includes("Assédio")}
+                      checked={type.includes("Assédio")}
                     />
                   }
                   value="Assédio"
@@ -170,7 +170,7 @@ function Reports() {
                   control={
                     <Checkbox
                       onChange={(e) => handleCheckBoxChange(e)}
-                      checked={reportType.includes("Outro")}
+                      checked={type.includes("Outro")}
                     />
                   }
                   value="Outro"
@@ -182,7 +182,7 @@ function Reports() {
                   control={
                     <Checkbox
                       onChange={(e) => handleCheckBoxChange(e)}
-                      checked={reportType.includes("Pouca iluminação")}
+                      checked={type.includes("Pouca iluminação")}
                     />
                   }
                   label="Pouca iluminação"
@@ -192,7 +192,7 @@ function Reports() {
                   control={
                     <Checkbox
                       onChange={(e) => handleCheckBoxChange(e)}
-                      checked={reportType.includes("Com matagal")}
+                      checked={type.includes("Com matagal")}
                     />
                   }
                   value="Com matagal"
@@ -202,7 +202,7 @@ function Reports() {
                   control={
                     <Checkbox
                       onChange={(e) => handleCheckBoxChange(e)}
-                      checked={reportType.includes("Pouca gente")}
+                      checked={type.includes("Pouca gente")}
                     />
                   }
                   value="Pouca gente"

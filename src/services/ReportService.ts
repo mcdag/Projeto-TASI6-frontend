@@ -17,7 +17,7 @@ export class ReportService {
     const response = await apiBack.get(
       '/report',
       {
-        validateStatus: status => [201, 400].includes(status),
+        validateStatus: status => [200, 400].includes(status),
       },
     );
     return response;

@@ -1,10 +1,10 @@
 export interface Report {
-    userId: string;
-    authToken: string;
-    reportType: string;
-    anonymous: boolean;
+    userId?: string;
+    authToken?: string;
+    type: string;
+    anonymous?: boolean;
     description: string;
-    reportDate: Date;
+    date: Date;
     longitude: number;
     latitude: number;
 }

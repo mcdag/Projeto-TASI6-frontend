@@ -1,12 +1,8 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useMemo, useEffect } from "react";
-import {
-  GoogleMap,
-  useLoadScript,
-  MarkerF,
-} from "@react-google-maps/api";
-import IconButton from '@mui/material/IconButton';
-import AddAlertIcon from '@mui/icons-material/AddAlert';
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import IconButton from "@mui/material/IconButton";
+import AddAlertIcon from "@mui/icons-material/AddAlert";
 import { ReportService } from "../../services/ReportService";
 import { Report } from "../../interfaces/Report";
 import GunIcon from "../../assets/gun.svg";
@@ -35,9 +31,9 @@ function Map({ reports }: MapProps) {
   return <GoogleMapsApi reportsList={reports} />;
 }
 
-function setIcon(reportType: string) {
+function setIcon(type: string) {
   let markerIcon = "";
-  switch (reportType) {
+  switch (type) {
     case "Assalto":
       markerIcon = GunIcon;
       break;
@@ -62,37 +58,16 @@ function setIcon(reportType: string) {
 
 function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
   const [reports, setReports] = React.useState<Array<Report>>(
-    reportsList || [
-      {
-        userId: "0",
-        authToken: "string",
-        reportType: "Assalto",
-        anonymous: true,
-        description: "string;,",
-        reportDate: new Date(),
-        longitude: -34.95090266104293,
-        latitude: -8.050512029966573,
-      },
-      {
-        userId: "0",
-        authToken: "string",
-        reportType: "Assalto",
-        anonymous: true,
-        description: "string;,",
-        reportDate: new Date(),
-        longitude: -34.9505938509932,
-        latitude: -8.051025258303103,
-      },
-    ]
+    reportsList || []
   );
   const [isSubscribed, setIsSubscribed] = React.useState(false);
-
+  console.log("reports->>", reports);
   const initialMarkers = reports.map((report) => {
-    let markerIcon = setIcon(report.reportType);
+    let markerIcon = setIcon(report.type);
 
     return (
       <MarkerF
-        key={report.longitude+report.latitude}
+        key={report.longitude + report.latitude}
         onClick={() => setDialog(true)}
         position={{ lat: report.latitude, lng: report.longitude }}
         icon={markerIcon}
@@ -107,25 +82,25 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
   };
 
   React.useEffect(() => {
-    if (!isSubscribed) {
-      const eventSource = new EventSource("http://localhost:8080/subscribe");
+    const eventSource = new EventSource("http://localhost:8080/subscribe");
 
-      eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
 
+      if (isSubscribed) {
         const newReport: Report = {
           userId: data.userId,
           authToken: "",
-          reportType: data.type,
+          type: data.type,
           anonymous: true,
           description: data.description,
-          reportDate: data.reportDate,
+          date: data.date,
           longitude: data.longitude,
           latitude: data.latitude,
         };
         setReports((reports) => reports.concat(newReport));
 
-        const markerIcon = setIcon(newReport.reportType);
+        const markerIcon = setIcon(newReport.type);
         const marker = (
           <MarkerF
             key={newReport.longitude}
@@ -136,17 +111,17 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
         );
 
         setMarkers((markers) => markers.concat(marker));
-      };
+      }
 
       setIsSubscribed(true);
-    }
-  }, [markers, isSubscribed]);
+    };
+  }, [markers]);
 
   async function getReports() {
     const response = await ReportService.getReports();
 
     if (response.status === 200) {
-      setReports(response.data);
+      setReports(response.data.reports);
     }
   }
 
@@ -167,8 +142,12 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
   return (
     <>
       <div className="add-report">
-        <IconButton sx={{border: "1px solid red", backgroundColor:"#ffffff"}} size="large" onClick={handleOnClickAddButton}>
-          <AddAlertIcon fontSize="inherit" color="error"/> 
+        <IconButton
+          sx={{ border: "1px solid red", backgroundColor: "#ffffff" }}
+          size="large"
+          onClick={handleOnClickAddButton}
+        >
+          <AddAlertIcon fontSize="inherit" color="error" />
         </IconButton>
       </div>
       <GoogleMap
