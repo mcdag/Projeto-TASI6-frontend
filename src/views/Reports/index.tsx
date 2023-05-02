@@ -104,32 +104,6 @@ function Reports() {
     }
   };
 
-  function Map() {
-    const handleOnClickMap = (e) => {
-      setPosition({
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-      });
-      setCenter({
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-      });
-      setShowMarker(true);
-    };
-
-    if (!isLoaded) return <CircularProgress />;
-    return (
-      <GoogleMap
-        onClick={handleOnClickMap}
-        zoom={15}
-        center={center}
-        mapContainerClassName="map-container"
-      >
-        <>{showMarker ? <MarkerF position={position} /> : <></>}</>
-      </GoogleMap>
-    );
-  }
-
   return (
     <>
       <div className="report-container">
@@ -150,7 +124,17 @@ function Reports() {
           <div>
             <p className="subtitle">Local do Relato</p>
             <div className="map-container">
-              <Map />
+              {isLoaded ?
+                <GoogleMap
+                onClick={handleOnClickMap}
+                zoom={15}
+                center={center}
+                mapContainerClassName="map-container"
+                >
+                  <>{showMarker ? <MarkerF position={position} /> : <></>}</>
+                </GoogleMap> :
+                <CircularProgress />
+              }
             </div>
             <p className="subtitle">Tipo de Relato</p>
             <div className="content-container">
