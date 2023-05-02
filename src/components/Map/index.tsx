@@ -1,8 +1,12 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useMemo, useEffect } from "react";
-import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
+import {
+  GoogleMap,
+  useLoadScript,
+  MarkerF,
+} from "@react-google-maps/api";
+import IconButton from '@mui/material/IconButton';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
 import { ReportService } from "../../services/ReportService";
 import { Report } from "../../interfaces/Report";
 import GunIcon from "../../assets/gun.svg";
@@ -163,11 +167,8 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
   return (
     <>
       <div className="add-report">
-        <IconButton
-          sx={{ backgroundColor: "#6E77F6" }}
-          onClick={handleOnClickAddButton}
-        >
-          <AddIcon />
+        <IconButton sx={{border: "1px solid red", backgroundColor:"#ffffff"}} size="large" onClick={handleOnClickAddButton}>
+          <AddAlertIcon fontSize="inherit" color="error"/> 
         </IconButton>
       </div>
       <GoogleMap

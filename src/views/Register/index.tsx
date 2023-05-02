@@ -1,16 +1,15 @@
+import React from "react";
 import Button from "../../components/Button";
 import { TextField } from "@mui/material";
-import { useState } from "react";
 import { User } from "../../interfaces/User";
 import { UserService } from "../../services/UserService";
-import React from "react";
 import "./styles.scss";
 
 function Register() {
-  const [name, setName] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [name, setName] = React.useState<string>("");
+  const [username, setUsername] = React.useState<string>("");
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
 
   const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
