@@ -1,19 +1,19 @@
+import React from "react";
+import Cookies from "js-cookie";
 import Button from "../../components/Button";
 import { Alert, TextField } from "@mui/material";
 import { useState } from "react";
 import { Auth } from "../../interfaces/User";
 import { UserService } from "../../services/UserService";
-import React from "react";
-import Cookies from "js-cookie";
 import "./styles.scss";
 
 function Login() {
-  const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
 
-  const handleChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+  const handleChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
   };
 
   const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,16 +22,15 @@ function Login() {
 
   const handleClick = async () => {
     const login: Auth = {
-      email: email,
+      username: username,
       password: password,
     };
     const response = await UserService.getLogin(login);
     if (response.status !== 200) {
       setError(true);
     } else {
-      Cookies.set('id', response.data.id);
-      Cookies.set('name', response.data.name);
-      Cookies.set('email', response.data.email);
+      Cookies.set('id', response.data.userId);
+      Cookies.set('token', response.data.authToken);
       window.location.replace(`${window.location.origin}/localization`);
     }
   };
@@ -48,7 +47,7 @@ function Login() {
               sx={{ width: "100%", justifyContent: "center" }}
               severity="error"
             >
-              Email ou senha inválidos
+              Username ou senha inválidos
             </Alert>
           ) : (
             <></>
@@ -58,9 +57,9 @@ function Login() {
           <TextField
             sx={{ marginBottom: "5%" }}
             className="text-field"
-            label="Email"
+            label="Username"
             variant="outlined"
-            onChange={handleChangeEmail}
+            onChange={handleChangeUsername}
           />
           <TextField
             type="password"

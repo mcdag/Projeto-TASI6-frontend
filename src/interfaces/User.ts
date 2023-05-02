@@ -1,5 +1,6 @@
 export interface User {
   id?: string;
+  authToken?: string;
   name: string;
   username: string;
   email: string;
@@ -8,6 +9,6 @@ export interface User {
 }
 
 export interface Auth {
-  email: string;
+  username: string;
   password: string,
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -17,11 +17,13 @@ import { IconButton } from "@mui/material";
 import "./styles.scss";
 
 function Reports() {
-  const [reportType, setReportType] = useState<Array<string>>([]);
-  const [isAnonymous, setIsAnonymous] = useState(false);
-  const [description, setDescription] = useState<string>("");
-  const [position, setPosition] = useState({ lat: 0, lng: 0 });
-  const [showMarker, setShowMarker] = useState(false);
+  const [reportType, setReportType] = React.useState<Array<string>>([]);
+  const [isAnonymous, setIsAnonymous] = React.useState(false);
+  const [description, setDescription] = React.useState<string>("");
+  const [position, setPosition] = React.useState({ lat: 0, lng: 0 });
+  const [showMarker, setShowMarker] = React.useState(false);
+  const [policeDialog, setPoliceDialog] =  React.useState(false);
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyAv1HV_sYP-O5MpzkzPxGhW0T34jq3-J7M",
   });
@@ -47,7 +49,6 @@ function Reports() {
     }
   };
 
-  const [policeDialog, setPoliceDialog] =  useState(false);
   const handlePoliceDialog = () => {
     setPoliceDialog(!policeDialog)
   }
@@ -57,25 +58,35 @@ function Reports() {
   }
 
   const handleSubimit = async () => {
-    const id = Cookies.get('id');
+    const id = Cookies.get('userId');
+    const token = Cookies.get('authToken');
     const report: Report = {
-      user_id: id,
-      type: reportType[0],
+      authToken: token || "",
+      userId: id || "",
+      reportType: reportType[0],
       anonymous: isAnonymous,
       description: description,
       longitude: position.lng,
       latitude: position.lat,
-      date: new Date(),
+      reportDate: new Date()
     };
     const response = await ReportService.createReport(report);
 
-    if (response.status === 200) {
+    if (response.status == 200) {
       alert("Relato criado com sucesso!");
       setPoliceDialog(true);
 
       setInterval(() => {
         window.location.replace(`${window.location.origin}/localization`);
       }, 5000);
+
+    } else if (response.status == 401) {
+      alert("Sua sessão expirou. Faça login novamente");
+
+      setInterval(() => {
+        window.location.replace(`${window.location.origin}/auth/login`);
+      }, 5000);
+      
     } else {
       alert("Erro ao criar relato... tente novamente mais tarde");
     }

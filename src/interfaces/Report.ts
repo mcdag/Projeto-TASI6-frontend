@@ -1,9 +1,10 @@
 export interface Report {
-    user_id?: string;
-    type: string;
+    userId: string;
+    authToken: string;
+    reportType: string;
     anonymous: boolean;
     description: string;
-    date?: Date;
+    reportDate: Date;
     longitude: number;
     latitude: number;
 }
