@@ -8,6 +8,13 @@
     display: grid;
     margin-left: 3%;
 
+    .alerts {
+      position: fixed;
+      margin-top: 15%;
+      z-index: 1;
+      width: 80%;
+    }
+    
     .arrow-button {
       display: flex;
       justify-content: flex-start;
