@@ -21,7 +21,7 @@ function ReportItem({ report }: Props) {
         </ListItemAvatar>
         <div className="date-text">
           <ListItemText
-            sx={{width: "80vw"}}
+            sx={{ width: "80vw" }}
             primary="Anônimo"
             color="black"
             secondary={
@@ -34,16 +34,15 @@ function ReportItem({ report }: Props) {
                   borderRadius="3px"
                   padding="2px"
                   fontSize="12px"
-                  >
+                >
                   {report.type}
                 </Typography>
                 <p className="description">{report.description}</p>
               </React.Fragment>
             }
-            />
-            <div>{report.date?.toLocaleString()}</div>
+          />
+          <div>{report.date?.toLocaleString()}</div>
         </div>
-
       </ListItem>
       <Divider variant="inset" component="li" />
     </div>

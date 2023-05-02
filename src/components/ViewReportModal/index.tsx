@@ -29,7 +29,7 @@ function ViewReportDialog({ handleFunction, reports }: PropsDialog) {
           margin: "0px",
           position: "absolute",
           bottom: "0px",
-          width: "100vw"
+          width: "100vw",
         },
       }}
       className="view-report-dialog-container"

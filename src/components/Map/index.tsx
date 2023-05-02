@@ -72,6 +72,7 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
   };
 
   const selectReport = (report: Report) => {
+    console.log("AQUII", report);
     setSelectedReport(report);
   };
 
@@ -128,6 +129,7 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
             description: report.description,
             longitude: report.longitude,
             latitude: report.latitude,
+            date: report.date,
           };
         }
       );
@@ -184,7 +186,7 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
       {dialog && (
         <ViewReportModel
           handleFunction={closeDialog}
-          reports={reports}
+          reports={[selectedReport!]}
         />
       )}
     </>
