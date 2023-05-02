@@ -1,6 +1,7 @@
 import React from "react";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import Map from "../../components/Map";
+import Cookies from "js-cookie";
 import "./styles.scss";
 
 function Localization() {
@@ -17,8 +18,10 @@ function Localization() {
   };
   
   React.useEffect(() => {
-    setTimeout(() => setReportDialog(true), 4000);
-    setTimeout(() => setLocalizationDialog(true), 10000);
+    if(!Cookies.get("authToken")){
+      setTimeout(() => setReportDialog(true), 4000);
+      setTimeout(() => setLocalizationDialog(true), 10000);
+    }
   }, []);
   
 
