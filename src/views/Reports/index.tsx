@@ -5,7 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Button from "../../components/Button";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import CircularProgress from "@mui/material/CircularProgress";
 import Cookies from "js-cookie";
 import PoliceDialog from "../../components/PoliceDialog";
@@ -21,17 +21,16 @@ function Reports() {
   const [isAnonymous, setIsAnonymous] = React.useState(false);
   const [description, setDescription] = React.useState<string>("");
   const [position, setPosition] = React.useState({ lat: 0, lng: 0 });
+  const [center, setCenter] = React.useState({
+    lat: -8.05087199438512,
+    lng: -34.95105296337313,
+  });
   const [showMarker, setShowMarker] = React.useState(false);
-  const [policeDialog, setPoliceDialog] =  React.useState(false);
+  const [policeDialog, setPoliceDialog] = React.useState(false);
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyAv1HV_sYP-O5MpzkzPxGhW0T34jq3-J7M",
   });
-
-  const center = React.useMemo(
-    () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),
-    []
-  );
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === "anonymous") {
@@ -40,7 +39,7 @@ function Reports() {
       setIsAnonymous(false);
     }
   };
-  
+
   const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       settype([...type, event.target.value]);
@@ -50,11 +49,15 @@ function Reports() {
   };
 
   const handlePoliceDialog = () => {
-    setPoliceDialog(!policeDialog)
-  }
+    setPoliceDialog(!policeDialog);
+  };
 
   const handleOnClickMap = (e) => {
     setPosition({
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    });
+    setCenter({
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     });
@@ -63,11 +66,11 @@ function Reports() {
 
   const handleClose = () => {
     window.location.replace(`${window.location.origin}/localization`);
-  }
+  };
 
   const handleSubmit = async () => {
-    const id = Cookies.get('userId');
-    const token = Cookies.get('authToken');
+    const id = Cookies.get("userId");
+    const token = Cookies.get("authToken");
     const report: Report = {
       authToken: token || "",
       userId: id || "",
@@ -76,7 +79,7 @@ function Reports() {
       description: description,
       longitude: position.lng,
       latitude: position.lat,
-      date: new Date()
+      date: new Date(),
     };
     console.log(report);
     const response = await ReportService.createReport(report);
@@ -88,14 +91,12 @@ function Reports() {
       setInterval(() => {
         window.location.replace(`${window.location.origin}/localization`);
       }, 5000);
-
     } else if (response.status === 401) {
       alert("Sua sessão expirou. Faça login novamente");
 
       setInterval(() => {
         window.location.replace(`${window.location.origin}/auth/login`);
       }, 5000);
-      
     } else {
       alert("Erro ao criar relato... tente novamente mais tarde");
     }
@@ -107,9 +108,13 @@ function Reports() {
         lat: e.latLng.lat(),
         lng: e.latLng.lng(),
       });
+      setCenter({
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+      });
       setShowMarker(true);
-    }
-  
+    };
+
     if (!isLoaded) return <CircularProgress />;
     return (
       <GoogleMap
@@ -118,9 +123,7 @@ function Reports() {
         center={center}
         mapContainerClassName="map-container"
       >
-        <>
-          {showMarker ? <MarkerF position={position}/> : <></>}
-        </>
+        <>{showMarker ? <MarkerF position={position} /> : <></>}</>
       </GoogleMap>
     );
   }
@@ -130,7 +133,7 @@ function Reports() {
       <div className="report-container">
         <div className="arrow-button">
           <IconButton onClick={handleClose}>
-            <ArrowBackIosIcon color="action"/>
+            <ArrowBackIosIcon color="action" />
           </IconButton>
         </div>
         <div className="title-container">
@@ -141,11 +144,11 @@ function Reports() {
           <div>
             <p className="subtitle">Local do Relato</p>
             <div className="map-container">
-              <Map/>
+              <Map />
             </div>
             <p className="subtitle">Tipo de Relato</p>
             <div className="content-container">
-              <div className='check-boxes'>
+              <div className="check-boxes">
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -246,9 +249,9 @@ function Reports() {
                 multiline
                 value={description}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                  event.stopPropagation()
-                  setDescription(event.target.value)}
-                }
+                  event.stopPropagation();
+                  setDescription(event.target.value);
+                }}
               />
               <div className="send-button">
                 <Button
@@ -261,9 +264,9 @@ function Reports() {
           </div>
         </FormGroup>
       </div>
-      {policeDialog && <PoliceDialog handleFunction={handlePoliceDialog}/>}
+      {policeDialog && <PoliceDialog handleFunction={handlePoliceDialog} />}
     </>
- )
+  );
 }
 
 export default Reports;
