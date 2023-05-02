@@ -3,11 +3,17 @@
   text-align: center;
   background: rgba(0, 0, 0, 0.25);
 
-  .title {
-    color: #3b418e;
+  .title-button {
     display: flex;
-    font-size: 19px;
-    justify-content: center;
+    justify-content: space-around;
+    margin-top: 5%;
+    align-items: center;
+    margin-left: 10%;
+
+    .button {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 
   .icon {
@@ -32,16 +38,6 @@
     font-weight: 500;
     font-size: 13px;
     line-height: 16px;
-  }
-
-  .button {
-    width: 70%;
-    background-color: #6E77F6;
-    margin: 5%;
-
-    &:hover {
-      background-color: #353AA6;
-    }
   }
 }
 

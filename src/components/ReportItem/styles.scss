@@ -1,3 +1,11 @@
-.description {
-  text-align: justify;
+.date-text {
+  display: flex;
+  width: 75vw;
+  font-size: 12px;
+  white-space: nowrap;
+
+
+  .description {
+    text-align: justify;
+  }
 }
