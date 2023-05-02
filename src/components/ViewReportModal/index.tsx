@@ -5,11 +5,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import { Report } from "../../interfaces/Report";
 import ComponentsList from "../ComponentsList";
-import Close from '@mui/icons-material/Close';
+import Close from "@mui/icons-material/Close";
 import "./styles.scss";
 
 interface PropsDialog {
@@ -17,10 +17,7 @@ interface PropsDialog {
   reports: Report[];
 }
 
-function ViewReportDialog({
-  handleFunction,
-  reports
-}: PropsDialog) {
+function ViewReportDialog({ handleFunction, reports }: PropsDialog) {
   return (
     <Dialog
       hideBackdrop={true}
@@ -40,15 +37,30 @@ function ViewReportDialog({
       aria-labelledby="view-report-dialog-title"
       aria-describedby="view-report-dialog-description"
     >
-      <DialogActions sx={{ display: "flex", justifyContent: "flex-end", alignItems: "start", padding: "10px"}}>
-        <IconButton sx={{padding: "0px", margin: "0px"}} color="primary" aria-label="close" onClick={handleFunction}>
-          <Close htmlColor="#000000"/>
-         </IconButton>
+      <DialogActions
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "start",
+          padding: "10px",
+        }}
+      >
+        <IconButton
+          sx={{ padding: "0px", margin: "0px" }}
+          color="primary"
+          aria-label="close"
+          onClick={handleFunction}
+        >
+          <Close htmlColor="#000000" />
+        </IconButton>
       </DialogActions>
-      <DialogTitle sx={{padding: "0x", color: "#3b418e"}} id="view-report-dialog-title">
+      <DialogTitle
+        sx={{ padding: "0x", color: "#3b418e" }}
+        id="view-report-dialog-title"
+      >
         Denúncias locais
       </DialogTitle>
-      <DialogContent sx={{padding: "0px 30px"}} className="content">
+      <DialogContent sx={{ padding: "0px 30px" }} className="content">
         <DialogContentText id="view-report-dialog-description">
           <ComponentsList reports={reports} />
         </DialogContentText>

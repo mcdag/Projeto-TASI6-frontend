@@ -60,13 +60,24 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
   const [reports, setReports] = React.useState<Array<Report>>(
     reportsList || []
   );
+
+  const [selectedReport, setSelectedReport] = React.useState<Report>();
   const [isSubscribed, setIsSubscribed] = React.useState(false);
+  const [dialog, setDialog] = React.useState(false);
 
   const [markers, setMarkers] = React.useState<JSX.Element[]>();
 
   const handleOnClickAddButton = () => {
     window.location.replace(`${window.location.origin}/report`);
   };
+
+  const selectReport = (report: Report) => {
+    setSelectedReport(report);
+  };
+
+  useEffect(() => {
+    if (selectedReport) setDialog(true);
+  }, [selectedReport]);
 
   React.useEffect(() => {
     const eventSource = new EventSource("http://localhost:8080/subscribe");
@@ -91,7 +102,7 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
         const marker = (
           <MarkerF
             key={newReport.longitude}
-            onClick={() => setDialog(true)}
+            onClick={() => selectReport(newReport)}
             position={{ lat: newReport.latitude, lng: newReport.longitude }}
             icon={markerIcon}
           />
@@ -127,7 +138,7 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
         return (
           <MarkerF
             key={report.longitude + report.latitude}
-            onClick={() => setDialog(true)}
+            onClick={() => selectReport(report)}
             position={{ lat: report.latitude, lng: report.longitude }}
             icon={markerIcon}
           />
@@ -147,10 +158,9 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
     () => ({ lat: -8.05087199438512, lng: -34.95105296337313 }),
     []
   );
-  const [dialog, setDialog] = React.useState(false);
 
   const closeDialog = () => {
-    setDialog(!dialog);
+    setDialog(false);
   };
 
   return (
@@ -172,7 +182,10 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
         {markers}
       </GoogleMap>
       {dialog && (
-        <ViewReportModel handleFunction={closeDialog} reports={reports} />
+        <ViewReportModel
+          handleFunction={closeDialog}
+          reports={[selectedReport!]}
+        />
       )}
     </>
   );
