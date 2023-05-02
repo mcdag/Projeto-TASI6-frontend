@@ -108,7 +108,7 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
 
       eventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);
-        console.log(data);
+
         const newReport: Report = {
           userId: data.userId,
           authToken: "",
@@ -130,7 +130,7 @@ function GoogleMapsApi({ reportsList }: GoogleMapsProps) {
             icon={markerIcon}
           />
         );
-        console.log("marker----> ", markers.length);
+
         setMarkers((markers) => markers.concat(marker));
       };
 

@@ -53,11 +53,19 @@ function Reports() {
     setPoliceDialog(!policeDialog)
   }
 
+  const handleOnClickMap = (e) => {
+    setPosition({
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    });
+    setShowMarker(true);
+  };
+
   const handleClose = () => {
     window.location.replace(`${window.location.origin}/localization`);
   }
 
-  const handleSubimit = async () => {
+  const handleSubmit = async () => {
     const id = Cookies.get('userId');
     const token = Cookies.get('authToken');
     const report: Report = {
@@ -70,6 +78,7 @@ function Reports() {
       latitude: position.lat,
       reportDate: new Date()
     };
+    console.log(report);
     const response = await ReportService.createReport(report);
 
     if (response.status == 200) {
@@ -243,7 +252,7 @@ function Reports() {
               />
               <div className="send-button">
                 <Button
-                  onClick={handleSubimit}
+                  onClick={handleSubmit}
                   text="Enviar relato"
                   type="submit"
                 />
